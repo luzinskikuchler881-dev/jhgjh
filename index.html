@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Central de Verificação</title>
+<title>Central de Acesso Seguro</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* RESET */
 *{
 margin:0;
 padding:0;
@@ -18,7 +17,6 @@ box-sizing:border-box;
 font-family:'Inter',sans-serif;
 }
 
-/* BODY */
 body{
 background:linear-gradient(180deg,#020617,#0f172a);
 color:#fff;
@@ -33,10 +31,10 @@ height:100vh;
 width:100%;
 max-width:420px;
 background:#0f172a;
-border-radius:18px;
+border-radius:20px;
 padding:30px;
 text-align:center;
-box-shadow:0 25px 70px rgba(0,0,0,0.7);
+box-shadow:0 25px 80px rgba(0,0,0,0.8);
 }
 
 /* ICON */
@@ -46,7 +44,7 @@ height:70px;
 margin:auto;
 margin-bottom:20px;
 border-radius:20px;
-background:linear-gradient(135deg,#3b82f6,#60a5fa);
+background:linear-gradient(135deg,#22c55e,#4ade80);
 display:flex;
 align-items:center;
 justify-content:center;
@@ -60,7 +58,7 @@ margin-bottom:10px;
 }
 
 /* TEXTO */
-p{
+.desc{
 color:#94a3b8;
 font-size:14px;
 margin-bottom:20px;
@@ -80,19 +78,26 @@ margin-bottom:15px;
 /* BOTÃO */
 .btn{
 width:100%;
-padding:15px;
+padding:16px;
 border:none;
 border-radius:10px;
-background:linear-gradient(90deg,#3b82f6,#2563eb);
+background:linear-gradient(90deg,#22c55e,#16a34a);
 color:white;
-font-weight:600;
+font-weight:700;
 font-size:16px;
 cursor:pointer;
 transition:.2s;
 }
 
 .btn:hover{
-transform:scale(1.03);
+transform:scale(1.04);
+}
+
+/* MICRO COPY */
+.micro{
+font-size:12px;
+color:#64748b;
+margin-top:10px;
 }
 
 /* LOADING */
@@ -104,7 +109,6 @@ margin-top:20px;
 .percent{
 font-size:28px;
 font-weight:700;
-margin-bottom:10px;
 }
 
 .bar{
@@ -113,29 +117,29 @@ height:10px;
 background:#1e293b;
 border-radius:10px;
 overflow:hidden;
+margin-top:10px;
 }
 
 .fill{
 height:100%;
 width:0%;
-background:linear-gradient(90deg,#3b82f6,#60a5fa);
-transition:width .2s;
+background:linear-gradient(90deg,#22c55e,#4ade80);
 }
 
 .status{
 margin-top:10px;
 font-size:13px;
-color:#38bdf8;
+color:#4ade80;
 }
 
-/* RESULTADO */
+/* RESULT */
 .result{
 display:none;
 margin-top:20px;
+text-align:left;
 background:#020617;
 padding:20px;
 border-radius:12px;
-text-align:left;
 }
 
 .result h2{
@@ -146,21 +150,20 @@ margin-bottom:10px;
 .result p{
 font-size:14px;
 color:#cbd5e1;
-margin-bottom:10px;
 }
 
 /* BOTÃO FINAL */
 .final-btn{
 margin-top:15px;
 display:block;
-width:100%;
 text-align:center;
 background:#22c55e;
 padding:14px;
-border-radius:8px;
-color:#fff;
+border-radius:10px;
+color:white;
 text-decoration:none;
-font-weight:600;
+font-weight:700;
+font-size:16px;
 }
 
 </style>
@@ -170,17 +173,23 @@ font-weight:600;
 
 <div class="card">
 
-<div class="icon">🔐</div>
+<div class="icon">✔</div>
 
-<h1>Verificação de Segurança</h1>
+<h1>Acesso Seguro</h1>
 
-<p>Confirme seu acesso para continuar.</p>
+<div class="desc">
+Confirme seu acesso para continuar com segurança.
+</div>
 
 <input type="text" id="nome" class="input" placeholder="Digite seu nome">
 
 <button class="btn" onclick="start()">
-Continuar
+Continuar agora
 </button>
+
+<div class="micro">
+🔒 Seus dados não são armazenados
+</div>
 
 <!-- LOADING -->
 <div class="loading" id="loading">
@@ -195,16 +204,16 @@ Continuar
 
 </div>
 
-<!-- RESULTADO -->
+<!-- RESULT -->
 <div class="result" id="result">
 
-<h2>✔ Verificação concluída</h2>
+<h2>✔ Acesso liberado</h2>
 
 <p>Seu acesso foi validado com sucesso.</p>
-<p>Você já pode continuar para a próxima etapa.</p>
+<p>Você já pode continuar.</p>
 
-<a href="https://prismatic-crostata-496139.netlify.app/" class="final-btn">
-Continuar acesso
+<a href="https://iridescent-brigadeiros-ff5c2a.netlify.app/" class="final-btn">
+Continuar para página
 </a>
 
 </div>
@@ -233,10 +242,9 @@ let fill = document.getElementById("fill")
 let status = document.getElementById("status")
 
 let steps = [
-"Iniciando verificação...",
-"Validando conexão...",
-"Checando segurança...",
-"Processando dados...",
+"Iniciando...",
+"Validando segurança...",
+"Processando...",
 "Finalizando..."
 ]
 
@@ -244,15 +252,15 @@ let progress = 0
 
 let interval = setInterval(()=>{
 
-progress += Math.floor(Math.random()*8)+3
+progress += Math.floor(Math.random()*7)+4
 
 if(progress > 100) progress = 100
 
 fill.style.width = progress + "%"
 percent.innerText = progress + "%"
 
-let stepIndex = Math.floor(progress / 20)
-status.innerText = steps[stepIndex] || "Finalizando..."
+let i = Math.floor(progress/25)
+status.innerText = steps[i] || "Finalizando..."
 
 if(progress >= 100){
 clearInterval(interval)
@@ -264,7 +272,7 @@ document.getElementById("result").style.display="block"
 
 }
 
-},300)
+},250)
 
 }
 
